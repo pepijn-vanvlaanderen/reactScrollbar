@@ -29,6 +29,9 @@ export default class ScrollArea extends React.Component {
             containerWidth: 0
         };
 
+        this.stiffness = props.stiffness || 170;
+        this.damping = props.damping || 26;
+
         this.scrollArea = {
             refresh: () => {
                 this.setSizesToState();
@@ -142,7 +145,10 @@ export default class ScrollArea extends React.Component {
             marginTop: -this.state.topPosition,
             marginLeft: -this.state.leftPosition
         };
-        let springifiedContentStyle = withMotion ? modifyObjValues(contentStyle, x => spring(x)) : contentStyle;
+
+        let springifiedContentStyle = withMotion
+          ? modifyObjValues(contentStyle, x => spring(x, { stiffness: this.stiffness, damping: this.damping }))
+          : contentStyle;
 
         return (
             <Motion style={springifiedContentStyle}>
@@ -153,7 +159,10 @@ export default class ScrollArea extends React.Component {
                         style={this.props.style}>
                         <div
                             ref={x => this.content = x}
-                            style={{ ...this.props.contentStyle, ...style }}
+                            style={{
+                                ...this.props.contentStyle,
+                                ...style,
+                            }}
                             className={contentClasses}
                             onTouchStart={this.handleTouchStart.bind(this)}
                             onTouchMove={this.handleTouchMove.bind(this)}
