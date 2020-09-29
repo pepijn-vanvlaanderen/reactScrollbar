@@ -28,7 +28,7 @@ module.exports = {
         rules: [
             {
                 test: /\.jsx$/,
-                exclude: /node_modules/,
+                include: /src/,
                 loader: "babel-loader"
             },
             {
@@ -40,5 +40,7 @@ module.exports = {
                 ]
             }
         ]
-    }
+    },
+
+    mode: 'production',
 };
