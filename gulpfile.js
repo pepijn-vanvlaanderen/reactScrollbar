@@ -68,13 +68,13 @@ gulp.task('less-examples', function(){
         .pipe(connect.reload());
 });
 
-gulp.task('default', function(callback){
-    runSequence('build', 'build-nocss', 'less', ['build-examples', 'less-examples'], callback);
-});
+gulp.task('default', gulp.series('build', 'build-nocss', 'less', ['build-examples', 'less-examples'], function (done) {
+  done();
+}));
 
-gulp.task('production', function(callback){
-    runSequence('build-production', 'build-production-nocss', 'less', callback);
-});
+gulp.task('production', gulp.series('build-production', 'build-production-nocss', 'less', function (done) {
+  done();
+}));
 
 gulp.task('watch', function() {
     connect.server({
@@ -83,7 +83,7 @@ gulp.task('watch', function() {
        port: 8003
      });
 
-    gulp.watch(['src/**/*.js', 'src/**/*.jsx', 'src/**/*.less'], ['default']);
-    gulp.watch(['examples/**/js/**/*.js', 'examples/**/*.jsx'], ['build-examples']);
-    gulp.watch('examples/**/*.less', ['less-examples']);
+    gulp.watch(['src/**/*.js', 'src/**/*.jsx', 'src/**/*.less'], gulp.series('default'));
+    gulp.watch(['examples/**/js/**/*.js', 'examples/**/*.jsx'], gulp.series('build-examples'));
+    gulp.watch('examples/**/*.less', gulp.series('less-examples'));
 });
