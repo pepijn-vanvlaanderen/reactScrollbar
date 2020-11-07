@@ -142,8 +142,8 @@ export default class ScrollArea extends React.Component {
         let contentClasses = 'scrollarea-content ' + (contentClassName || '');
 
         let contentStyle = {
-            translateY: -this.state.topPosition,
-            translateX: -this.state.leftPosition
+            marginTop: -this.state.topPosition,
+            marginLeft: -this.state.leftPosition
         };
 
         let springifiedContentStyle = withMotion
@@ -162,7 +162,6 @@ export default class ScrollArea extends React.Component {
                             style={{
                                 ...this.props.contentStyle,
                                 ...style,
-                                transform: `translate3d(${style.translateX}px, ${style.translateY}px, 0)`,
                             }}
                             className={contentClasses}
                             onTouchStart={this.handleTouchStart.bind(this)}
